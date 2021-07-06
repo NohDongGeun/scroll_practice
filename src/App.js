@@ -1,8 +1,10 @@
+import ScrollWrapper from "./ScrollWrapper";
 
 
 function App() {
+  
   return (
-  <div>asdasd</div>
+      <ScrollWrapper/>
   );
 }
 

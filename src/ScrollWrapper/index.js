@@ -1,41 +1,66 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import Card from "../Card";
+import { useKeenSlider } from "keen-slider/react";
+import KeenSlider from "keen-slider";
+import "keen-slider/keen-slider.min.css";
+import "./index.css";
 
 const ScrollWrapper = () => {
-  const [left, setLeft] = useState(-50);
-  const [top, setTop] = useState(-50);
-  const scroll = useRef(0);
-  const [stop, setStop] = useState(false);
+  const [options, setOptions] = useState({});
+  const [sliderRef] = useKeenSlider(options);
+  const [width, setWidth] = useState(0);
+  const slider = useRef(null);
 
-  const handleScroll = () => {
-    let yy = document.documentElement.scrollTop;
+  useEffect(() => {
+    console.log(width);
+  }, [width]);
 
-    scroll.current = yy;
-    console.log(scroll.current);
-    if (3000 <= scroll.current && scroll.current <= 3050) {
-      window.onscroll = function () {
-        window.scrollTo(0, 3000);
-      };
-      setTimeout(() => {
-        window.onscroll = function () {};
-      }, 1000);
-      // setStop(true);
-      // setTimeout(() => {
-      //   setStop(false);
-      // }, 500);
-    }
+  const resize = () => {
+    const customWidth = window.innerWidth - 1720;
+    const innerWidth = window.innerWidth / 432;
+    setOptions({
+      centered: true,
+      loop: true,
+      resize:() => {
+        
+      },
+      slidesPerView: () => {
+        return innerWidth;
+      },
+    });
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    resize();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", resize);
+
+    return () => window.removeEventListener("resize", resize);
   }, []);
 
   return (
-    <Container stop={stop}>
-      <Test left={left} top={top}></Test>
+    <Container ref={sliderRef} className="keen-slider" width={width}>
+      <Cards1 className="keen-slider__slide">
+        <img src="https://picsum.photos/284/190?3" />
+        <h1>Sed at diam id leo pulvinar dapibus</h1>
+      </Cards1>
+      <Cards2 className="keen-slider__slide">
+        <img src="https://picsum.photos/284/190?3" />
+        <h1>Sed at diam id leo pulvinar dapibus</h1>
+      </Cards2>
+      <Cards3 className="keen-slider__slide">
+        <img src="https://picsum.photos/284/190?3" />
+        <h1>Sed at diam id leo pulvinar dapibus</h1>
+      </Cards3>
+      <Cards4 className="keen-slider__slide">
+        <img src="https://picsum.photos/284/190?3" />
+        <h1>Sed at diam id leo pulvinar dapibus</h1>
+      </Cards4>
+      <Cards5 className="keen-slider__slide">
+        <img src="https://picsum.photos/284/190?3" />
+        <h1>Sed at diam id leo pulvinar dapibus</h1>
+      </Cards5>
     </Container>
   );
 };
@@ -43,26 +68,31 @@ const ScrollWrapper = () => {
 export default ScrollWrapper;
 
 export const Container = styled.div`
-  height: 8000px;
+  border: 1px solid red;
   width: 100%;
-  position: relative;
-
-  ${(props) =>
-    props.stop &&
-    css`
-      height: 100%;
-      min-height: 100%;
-      over-flow: hidden;
-      touch-action: none;
-    `};
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+`;
+export const Cards1 = styled.div`
+  height: 300px;
+  background-color: red;
 `;
 
-export const Test = styled.div`
-  position: fixed;
-  background-color: red;
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  left: 50%;
-  transform: ${(props) => `translate(${props.left}%, ${props.top}%)`};
+export const Cards2 = styled.div`
+  height: 300px;
+  background-color: blue;
+`;
+
+export const Cards3 = styled.div`
+  height: 300px;
+  background-color: black;
+`;
+export const Cards4 = styled.div`
+  height: 300px;
+  background-color: yellow;
+`;
+export const Cards5 = styled.div`
+  height: 300px;
+  background-color: purple;
 `;
